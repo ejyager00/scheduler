@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 
 # Check to see if an employee is available to work a certain shift
-def checkAvailability(shiftStart, shiftEnd, empID, employees):
+def checkAvailability(shiftStart: datetime.datetime, shiftEnd: datetime.datetime, empID: int, employees: pd.DataFrame):
     # Dictionary to convert int to day of week
     dayConvert = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat", 6: "Sun"}
     # Account for shifts that extend into a different day
@@ -22,7 +22,7 @@ def checkAvailability(shiftStart, shiftEnd, empID, employees):
         return False
 
 # Loop through all employees to find those that are available to work a certain shift
-def getAvailableEmployees(shiftStart, shiftEnd, employees):
+def getAvailableEmployees(shiftStart: datetime.datetime, shiftEnd: datetime.datetime, employees: pd.DataFrame):
     availableEmployees = []
 
     for index, row in employees.iterrows():
