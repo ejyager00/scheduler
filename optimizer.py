@@ -16,7 +16,7 @@ def create_overlap_chart(shifts: pd.DataFrame):
 
 def create_graph(shifts):
     shift_graph = nx.Graph()
-    shift_graph.add_nodes_from(range(shifts.shape[0]))
+    shift_graph.add_nodes_from(list(range(shifts.shape[0])))
     for i in range(shifts.shape[0]):
         for x in shifts['overlapping'][i]:
             shift_graph.add_edge(i, x)
