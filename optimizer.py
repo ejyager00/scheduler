@@ -36,18 +36,40 @@ def during(start1: datetime.datetime, end1: datetime.datetime, start2: datetime.
     return not (start1>end2 or start2>end1)
 
 def create_overlap_chart(shifts: pd.DataFrame):
+    """Checks all shifts to see which shifts overlap.
+
+    Args:
+        shifts (pd.DataFrame): The dataframe containing the shifts and their information
+
+    Returns:
+        pd.DataFrame: Shift dataframe with an added column for overlaps
+    """
+    #loop over all shifts
     for i in range(shifts.shape[0]):
         overlapping_shifts = []
+        #loop over all other shifts and track which ones overlap with i
         for j in range(shifts.shape[0]):
             if i!=j:
+                #if the shifts overlap, then add shift j as overlapping with i
                 if during(shifts['start'][i],shifts['end'][i],shifts['start'][j],shifts['end'][j]):
                     overlapping_shifts.append(j)
+        #add a column called overlapping to the dataframe
         shifts['overlapping'][i]=tuple(overlapping_shifts)
     return shifts
 
 def create_graph(shifts: pd.DataFrame):
+    """Creates a graph where shifts are vertices and adjacent vertices overlap.
+
+    Args:
+        shifts (pd.DataFrame): The dataframe containing the shifts and their information
+
+    Returns:
+        nx.Graph: graph of shifts
+    """
     shift_graph = nx.Graph()
+    #add all shifts as nodes
     shift_graph.add_nodes_from(list(range(shifts.shape[0])))
+    #For all nodes, add edges between each overlapping shift
     for i in range(shifts.shape[0]):
         for x in shifts['overlapping'][i]:
             shift_graph.add_edge(i, x)
