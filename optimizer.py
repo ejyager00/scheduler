@@ -76,7 +76,15 @@ def create_graph(shifts: pd.DataFrame):
     return shift_graph
 
 def deterministic_choices(shifts: pd.DataFrame, shift_graph: nx.Graph):
-    #THIS FUNCTION IS NOT FINISHED
+    """Fills in all shifts that only have one option.
+
+    Args:
+        shifts (pd.DataFrame): The dataframe containing the shifts and their information
+        shift_graph (nx.Graph): Graph where overlapping shifts are adjacent vertices
+
+    Returns:
+        nx.Graph: updated graph of shifts
+    """
     change_made = True
     while change_made:
         change_made = False
@@ -86,6 +94,13 @@ def deterministic_choices(shifts: pd.DataFrame, shift_graph: nx.Graph):
             elif row['Employee']==0:
                 if len(row['PotentialEmployees'])==1:
                     row['Employee']=row['PotentialEmployees'][0]
+                    change_made = True
+                    for overlapping_shift in shift_graph[i]:
+                        s = shifts.iloc[overlapping_shift]['PotentialEmployees']
+                        if row['Employee'] in s:
+                            p = s.index(row['Employee'])
+                            shifts.iloc[overlapping_shift]['PotentialEmployees'] = s[:p]+s[p+1:]
+    return shifts
 
 def create_schedule(shifts: pd.DataFrame):
     create_overlap_chart(shifts)
