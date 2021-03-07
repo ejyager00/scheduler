@@ -83,7 +83,7 @@ def deterministic_choices(shifts: pd.DataFrame, shift_graph: nx.Graph):
         shift_graph (nx.Graph): Graph where overlapping shifts are adjacent vertices
 
     Returns:
-        nx.Graph: updated graph of shifts
+        pd.DataFrame: updated shift dataframe
     """
     change_made = True
     while change_made:
