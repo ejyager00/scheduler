@@ -17,6 +17,7 @@ main(args: list) -> pandas.DataFrame
 import sys
 import datetime
 import pandas as pd
+import numpy as np
 import networkx as nx
 
 def during(start1: datetime.datetime, end1: datetime.datetime, start2: datetime.datetime, end2: datetime.datetime):
@@ -101,6 +102,23 @@ def deterministic_choices(shifts: pd.DataFrame, shift_graph: nx.Graph):
                             p = s.index(row['Employee'])
                             shifts.iloc[overlapping_shift]['PotentialEmployees'] = s[:p]+s[p+1:]
     return shifts
+
+def total_cost(x: np.ndarray, shifts: pd.DataFrame, shift_graph: nx.Graph):
+    """Objective function.
+
+    Args:
+        x (np.ndarray): vector with shift assignments to test
+        shifts (pd.DataFrame): The dataframe containing the shifts and their information
+        shift_graph (nx.Graph): Graph where overlapping shifts are adjacent vertices
+
+    Returns:
+        np.double: the objective cost for shift assignment x
+    """
+    #I need to figure out how to make the vector useful
+    for shift in shift_graph:
+        #calculate cost at this vertex
+        pass
+    return np.double(0)
 
 def create_schedule(shifts: pd.DataFrame):
     create_overlap_chart(shifts)
